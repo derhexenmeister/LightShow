@@ -196,12 +196,11 @@ def init():
     while not _spi.try_lock():
         pass
 
-    # Goal is to adjust the speed so that it takes about 1 ms
-    # to draw the screen. But we need some idle time for other
-    # processing too. And the SPI clock rate isn't infinitely
-    # adjustable.
-    # _spi.configure(baudrate=4000000, phase=0, polarity=0)
-    _spi.configure(baudrate=1500000, phase=0, polarity=0)
-
+    # It's taking 1.5 ms to draw the screen with a SPI clock
+    # of 8 MHz. The goal is to leave 10% idle time for CircuitPython
+    # to do other things. We are interrupting at a rate of 500 Hz.
+    # If 8 MHz is too fast, then we will need to slow down the
+    # interrupt rate and thus the screen refresh rate.
+    _spi.configure(baudrate=8000000, phase=0, polarity=0)
     _spi_595.SPI_595(_spi, _chip_select, _screen.buffer)
 

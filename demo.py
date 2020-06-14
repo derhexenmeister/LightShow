@@ -1,31 +1,5 @@
 import spi_595
-
-spi_595.init()
-
-pix = spi_595.BLACK
-screen = spi_595.Pix.from_iter((
-    (pix, pix, pix, pix, pix, pix, pix, pix),
-    (pix, pix, pix, pix, pix, pix, pix, pix),
-    (pix, pix, pix, pix, pix, pix, pix, pix),
-    (pix, pix, pix, pix, pix, pix, pix, pix),
-    (pix, pix, pix, pix, pix, pix, pix, pix),
-    (pix, pix, pix, pix, pix, pix, pix, pix),
-    (pix, pix, pix, pix, pix, pix, pix, pix),
-    (pix, pix, pix, pix, pix, pix, pix, pix),
-))
-
-#screen.box(color=spi_595.RED, x=0, y=0, width=4, height=4)
-#screen.box(color=spi_595.GREEN, x=4, y=0, width=4, height=4)
-#screen.box(color=spi_595.BLUE, x=0, y=4, width=4, height=4)
-#screen.box(color=spi_595.CYAN, x=4, y=4, width=4, height=4)
-
-#screen.box(color=spi_595.MAGENTA, x=2, y=2, width=2, height=2)
-#screen.box(color=spi_595.YELLOW, x=2, y=4, width=2, height=2)
-#screen.box(color=spi_595.WHITE, x=4, y=4, width=2, height=2)
-#screen.box(color=spi_595.BLACK, x=4, y=2, width=2, height=2)
-
-#screen.pixel(0, 0, color=spi_595.WHITE)
-#screen.pixel(0, 7, color=spi_595.YELLOW)
+import time
 
 def red(intensity):
     return intensity*16
@@ -41,7 +15,23 @@ def yellow(intensity):
     return red(intensity)+green(intensity)
 def white(intensity):
     return red(intensity)+green(intensity)+blue(intensity)
-    
+
+spi_595.init()
+screen = spi_595.Pix()
+
+################################################################################
+# First Phase
+background = spi_595.Pix.from_iter((
+    (0,0,0,0,0,0,0,0),
+    (0,0,0,0,0,0,0,0),
+    (0,0,0,0,0,0,0,0),
+    (0,0,0,0,0,0,0,0),
+    (0,0,0,0,0,0,0,0),
+    (0,0,0,0,0,0,0,0),
+    (0,0,0,0,0,0,0,0),
+    (0,0,0,0,0,0,0,0),
+))
+
 for x in range(4):
     screen.pixel(x, 0, color=red(x))
     screen.pixel(x+4, 0, color=red(3-x))
@@ -61,10 +51,45 @@ for x in range(4):
 # Try orange for bottom row. It seems to show some
 # fading. May be due to current sharing for column?
 #
-#screen.box(color=52, x=0, y=0, width=8, height=1)
 screen.box(color=52, x=0, y=7, width=8, height=1)
 
+spi_595.show(screen)
+
+time.sleep(10)
+    
+################################################################################
+# Second Phase
+
+ball = spi_595.Pix.from_iter((
+    (63, 42),
+    (42, 21),
+))
+
+background = spi_595.Pix.from_iter((
+    (spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN),
+    (spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED),
+    (spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN),
+    (spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED),
+    (spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN),
+    (spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED),
+    (spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN),
+    (spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED),
+))
+
+x = 3
+y = 1
+dx = 1
+dy = 1
 while True:
+    screen.blit(background)
+    if not 0 < x < 6:
+        dx = -dx
+    if not 0 < y < 6:
+        dy = -dy
+    x += dx
+    y += dy
+    screen.blit(ball, x, y)
     spi_595.show(screen)
-    spi_595.tick(1/6)
+    spi_595.tick(4/12)
+    
 
