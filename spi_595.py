@@ -5,6 +5,14 @@ import time
 import digitalio
 import _spi_595
 
+BLACK   = 0x00
+RED     = 0x30
+GREEN   = 0x0C
+BLUE    = 0x03
+CYAN    = GREEN + BLUE
+MAGENTA = RED + BLUE
+YELLOW  = RED + GREEN
+WHITE   = RED + GREEN + BLUE
 
 _FONT = (
         b'\xff\xff\xff\xff\xff\xff\xf3\xf3\xf7\xfb\xf3\xff\xcc\xdd\xee\xff\xff'
@@ -188,6 +196,12 @@ def init():
     while not _spi.try_lock():
         pass
 
-    _spi.configure(baudrate=4000000, phase=0, polarity=0)
+    # Goal is to adjust the speed so that it takes about 1 ms
+    # to draw the screen. But we need some idle time for other
+    # processing too. And the SPI clock rate isn't infinitely
+    # adjustable.
+    # _spi.configure(baudrate=4000000, phase=0, polarity=0)
+    _spi.configure(baudrate=1500000, phase=0, polarity=0)
 
     _spi_595.SPI_595(_spi, _chip_select, _screen.buffer)
+
