@@ -58,22 +58,37 @@ spi_595.show(screen)
 time.sleep(10)
     
 ################################################################################
-# Second Phase
+# Second Phase - show all colors on one screen (could sort?)
+#
+z = 0
+for x in range(8):
+ for y in range(8):
+    screen.pixel(x, y, color=z)
+    z = z + 1
+
+spi_595.show(screen)
+
+time.sleep(10)
+
+################################################################################
+# Third Phase
 
 ball = spi_595.Pix.from_iter((
-    (63, 42),
-    (42, 21),
+    (0,  0,  0, 0), # black outline and
+    (0, 63, 42, 0), # different levels of white
+    (0, 42, 21, 0), # UGLY, but easier to see white ball
+    (0,  0,  0, 0),
 ))
 
 background = spi_595.Pix.from_iter((
-    (spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN),
-    (spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED),
-    (spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN),
-    (spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED),
-    (spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN),
-    (spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED),
-    (spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN),
-    (spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED, spi_595.GREEN, spi_595.RED),
+    (spi_595.RED, spi_595.GREEN, spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED, spi_595.GREEN),
+    (spi_595.GREEN, spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED, spi_595.GREEN, spi_595.BLUE),
+    (spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED, spi_595.GREEN, spi_595.BLUE, spi_595.CYAN),
+    (spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED, spi_595.GREEN, spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA),
+    (spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED, spi_595.GREEN, spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW),
+    (spi_595.YELLOW, spi_595.RED, spi_595.GREEN, spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED),
+    (spi_595.RED, spi_595.GREEN, spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED, spi_595.GREEN),
+    (spi_595.GREEN, spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED, spi_595.GREEN, spi_595.BLUE),
 ))
 
 x = 3
@@ -82,14 +97,13 @@ dx = 1
 dy = 1
 while True:
     screen.blit(background)
-    if not 0 < x < 6:
+    if not -1 < x < 5:
         dx = -dx
-    if not 0 < y < 6:
+    if not -1 < y < 5:
         dy = -dy
     x += dx
     y += dy
     screen.blit(ball, x, y)
     spi_595.show(screen)
     spi_595.tick(4/12)
-    
-
+ 
