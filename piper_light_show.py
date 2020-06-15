@@ -1,8 +1,35 @@
+################################################################################
+# The MIT License (MIT)
+#
+# Copyright (c) 2020 Keith Evans
+# Based on PewPew
+# Copyright (c) 2019 Radomir Dopieralski
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
+################################################################################
 from micropython import const
+from adafruit_debouncer import Debouncer
 import board
 import busio
 import time
-import digitalio
+from digitalio import DigitalInOut, Direction, Pull
 import _spi_595
 
 BLACK   = 0x00
@@ -50,6 +77,13 @@ _FONT = (
         b'\xff\xd3\xf3\xf9\xf3\xd3\xff\xf3\xf3\xf7\xf3\xf3\xff\xf1\xf3\xdb\xf3'
         b'\xf1\xff\xbfr\x8d\xfe\xff\xfff\x99f\x99f\x99')
 
+K_RIGHT = const(0x01)
+K_DOWN  = const(0x02)
+K_LEFT  = const(0x04)
+K_UP    = const(0x08)
+K_O     = const(0x40)
+K_X     = const(0x80)
+
 _screen = None
 
 def brightness(level):
@@ -63,6 +97,21 @@ def tick(delay):
 
     _tick += delay
     time.sleep(max(0, _tick - time.monotonic()))
+
+# Directional PAD
+#
+def keys():
+    global _up, _down, _left, _right
+    value = 0
+    if not _up.value:
+        value = value | K_UP
+    if not _down.value:
+        value = value | K_DOWN
+    if not _left.value:
+        value = value | K_LEFT
+    if not _right.value:
+        value = value | K_RIGHT
+    return value
 
 class GameOver(Exception):
     pass
@@ -180,6 +229,7 @@ class Pix:
 
 def init():
     global _screen, _tick, _spi, _chip_select
+    global _up, _down, _left, _right
 
     if _screen is not None:
         return
@@ -187,8 +237,8 @@ def init():
     _screen = Pix(8, 8)
     _tick = time.monotonic()
 
-    _chip_select = digitalio.DigitalInOut(board.MISO)
-    _chip_select.direction = digitalio.Direction.OUTPUT
+    _chip_select = DigitalInOut(board.MISO)
+    _chip_select.direction = Direction.OUTPUT
     _chip_select.value = False
 
     _spi = busio.SPI(board.SCK, MOSI=board.MOSI)
@@ -203,4 +253,25 @@ def init():
     # interrupt rate and thus the screen refresh rate.
     _spi.configure(baudrate=8000000, phase=0, polarity=0)
     _spi_595.SPI_595(_spi, _chip_select, _screen.buffer)
+
+    # TODO - handle DPAD for easier porting of PewPew projects
+    # probably want to move this out later
+    #
+    # Directional pad pins need pull-ups enabled
+    #
+    _right = DigitalInOut(board.D4)
+    _right.direction = Direction.INPUT
+    _right.pull = Pull.UP
+
+    _left = DigitalInOut(board.D3)
+    _left.direction = Direction.INPUT
+    _left.pull = Pull.UP
+
+    _up = DigitalInOut(board.D1)
+    _up.direction = Direction.INPUT
+    _up.pull = Pull.UP
+
+    _down = DigitalInOut(board.D0)
+    _down.direction = Direction.INPUT
+    _down.pull = Pull.UP
 
