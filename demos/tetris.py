@@ -11,16 +11,17 @@ BLUE    = piper_light_show.BLUE
 CYAN    = piper_light_show.CYAN
 MAGENTA = piper_light_show.MAGENTA
 YELLOW  = piper_light_show.YELLOW
+ORANGE  = 52
 
 BRICKS = [
     piper_light_show.Pix.from_iter([[RED, RED], [RED, RED]]),
     piper_light_show.Pix.from_iter([[BLACK, GREEN], [GREEN, GREEN], [BLACK, GREEN]]),
-    piper_light_show.Pix.from_iter([[BLACK, YELLOW], [YELLOW, YELLOW], [YELLOW, BLACK]]),
-    piper_light_show.Pix.from_iter([[GREEN, BLACK], [GREEN, GREEN], [BLACK, GREEN]]),
-    piper_light_show.Pix.from_iter([[GREEN, GREEN], [BLACK, GREEN], [BLACK, GREEN]]),
+    piper_light_show.Pix.from_iter([[BLACK, BLUE], [BLUE, BLUE], [BLUE, BLACK]]),
+    piper_light_show.Pix.from_iter([[CYAN, BLACK], [CYAN, CYAN], [BLACK, CYAN]]),
+    piper_light_show.Pix.from_iter([[MAGENTA, MAGENTA], [BLACK, MAGENTA], [BLACK, MAGENTA]]),
     piper_light_show.Pix.from_iter([[YELLOW, YELLOW], [YELLOW, BLACK], [YELLOW, BLACK]]),
-    piper_light_show.Pix.from_iter([[RED], [RED], [RED], [RED]]),
-    piper_light_show.Pix.from_iter([[RED], [RED], [RED], [RED]]),
+    piper_light_show.Pix.from_iter([[ORANGE], [ORANGE], [ORANGE], [ORANGE]]),
+    piper_light_show.Pix.from_iter([[ORANGE], [ORANGE], [ORANGE], [ORANGE]]),
 ]
 
 def is_colliding(board, brick, brick_x, brick_y):
@@ -41,7 +42,7 @@ piper_light_show.init()
 
 while True:
     screen = piper_light_show.Pix(width=8, height=8)
-    screen.box(color=YELLOW, x=6, y=0, width=2, height=8)
+    #screen.box(color=YELLOW, x=6, y=0, width=2, height=8) # What was this???
     next_brick = BRICKS[random.getrandbits(3)]
     board = piper_light_show.Pix(width=8, height=12)
     board.box(color=CYAN)
