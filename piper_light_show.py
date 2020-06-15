@@ -86,6 +86,16 @@ K_X     = const(0x80)
 
 _screen = None
 
+# Map a 24-bit color tuple (RR, GG, BB) to a 6-bit color
+#
+def rgb_to_byte(color):
+  r = ((color[0] >> 6) & 3) << 4
+  g = ((color[1] >> 6) & 3) << 2
+  b = ((color[2] >> 6) & 3)
+  return (r | g | b)
+
+# Placeholder for global brightness setting
+#
 def brightness(level):
     pass
 
