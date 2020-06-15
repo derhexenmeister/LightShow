@@ -1,4 +1,4 @@
-# From https://github.com/piper_light_showpiper_light_show-game/game-sokoban/blob/master/sokoban.py
+# From https://github.com/pewpew-game/game-sokoban/blob/master/sokoban.py
 #
 import piper_light_show
 

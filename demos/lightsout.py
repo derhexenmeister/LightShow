@@ -1,4 +1,4 @@
-# From https://github.com/piper_light_showpiper_light_show-game/game-lightsout/blob/master/lightsout.py
+# From https://github.com/pewpew-game/game-lightsout/blob/master/lightsout.py
 #
 import piper_light_show
 

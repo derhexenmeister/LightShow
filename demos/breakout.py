@@ -1,4 +1,4 @@
-# From https://github.com/piper_light_showpiper_light_show-game/game-breakout/blob/master/breakout.py
+# From https://github.com/pewpew-game/game-breakout/blob/master/breakout.py
 import piper_light_show
 
 def start():

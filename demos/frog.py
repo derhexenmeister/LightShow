@@ -1,4 +1,4 @@
-# From https://github.com/piper_light_showpiper_light_show-game/piper_light_showpiper_light_show/blob/master/games/frog.py
+# From https://github.com/pewpew-game/piper_light_showpiper_light_show/blob/master/games/frog.py
 #
 import piper_light_show
 

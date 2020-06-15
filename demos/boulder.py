@@ -1,4 +1,4 @@
-# From https://github.com/piper_light_showpiper_light_show-game/game-boulder/blob/master/boulder.py
+# From https://github.com/pewpew-game/game-boulder/blob/master/boulder.py
 #
 import piper_light_show
 
