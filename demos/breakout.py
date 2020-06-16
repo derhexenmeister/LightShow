@@ -120,6 +120,13 @@ def has_hit_block(ball, blocks):
 def has_block_alive(blocks, x, y):
     return x >= 0 and y >= 0 and len(blocks) > y and len(blocks[y]) > x and blocks[y][x] > 0
 
+# Quick hack
+def decrement_block(color):
+    if color == piper_light_show.GREEN:
+        return piper_light_show.BLACK
+    elif color == piper_light_show.BLUE:
+        return piper_light_show.GREEN
+
 def resolve_block_hit(ball, blocks):
     xball, yball = ball['position']
     vxball, vyball = ball['velocity']
@@ -139,16 +146,16 @@ def resolve_block_hit(ball, blocks):
 
     if has_block_alive(blocks, xball, next_yball):
         diagonal_hit = False
-        blocks[next_yball][xball] -= 1
+        blocks[next_yball][xball] = decrement_block(blocks[next_yball][xball])
         vyball = -vyball
     
     if has_block_alive(blocks, next_xball, yball):
         diagonal_hit = False
-        blocks[yball][next_xball] -= 1
+        blocks[yball][next_xball] = decrement_block(blocks[yball][next_xball])
         vxball = -vxball
 
     if diagonal_hit:
-        blocks[next_yball][next_xball] -= 1
+        blocks[next_yball][next_xball] = decrement_block(blocks[next_yball][next_xball])
         vxball = -vxball
         vyball = -vyball
 
@@ -241,7 +248,7 @@ def show_ball(scene, ball):
 def end_game(winner=False):
     scene = new_scene()
     message = 'You Win' if winner else 'Game Over'
-    text = piper_light_show.Pix.from_text(message, color=piper_light_show.WHITE)
+    text = piper_light_show.Pix.from_text(message, color=piper_light_show.RED, bgcolor=piper_light_show.BLUE)
     for dx in range(-8, text.width):
         scene.blit(text, -dx, 1)
         piper_light_show.show(scene)
