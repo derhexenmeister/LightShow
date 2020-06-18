@@ -1,4 +1,4 @@
-import spi_595
+import piper_light_show
 import time
 
 def red(intensity):
@@ -16,21 +16,21 @@ def yellow(intensity):
 def white(intensity):
     return red(intensity)+green(intensity)+blue(intensity)
 
-spi_595.init()
-screen = spi_595.Pix()
+piper_light_show.init()
+screen = piper_light_show.Pix()
 
 while True:
     ################################################################################
     # First Phase
-    text = spi_595.Pix.from_text("Hello world!", color=spi_595.RED, bgcolor=spi_595.BLUE)
-    screen.box(color=spi_595.BLUE, x=0, y=0, width=8, height=8)
+    text = piper_light_show.Pix.from_text("Hello world!", color=piper_light_show.RED, bgcolor=piper_light_show.BLUE)
+    screen.box(color=piper_light_show.BLUE, x=0, y=0, width=8, height=8)
 
     start = time.monotonic()
     while time.monotonic() - start < 5:
         for dx in range(-8, text.width):
             screen.blit(text, -dx, 1)
-            spi_595.show(screen)
-            spi_595.tick(1/12)
+            piper_light_show.show(screen)
+            piper_light_show.tick(1/12)
             
     ################################################################################
     # Second Phase
@@ -56,7 +56,7 @@ while True:
         screen.pixel(x+4, 6, color=white(3-x))
 
 
-    spi_595.show(screen)
+    piper_light_show.show(screen)
 
     time.sleep(5)
         
@@ -69,14 +69,14 @@ while True:
         screen.pixel(x, y, color=z)
         z = z + 1
 
-    spi_595.show(screen)
+    piper_light_show.show(screen)
 
     time.sleep(5)
 
     ################################################################################
     # Fourth phase - sorted by value, hue, saturation
 
-    background = spi_595.Pix.from_iter((
+    background = piper_light_show.Pix.from_iter((
         (0,  21, 16, 20,  4,  5,  1, 17), 
         (42, 37, 32, 36, 41, 40, 24, 25), 
         (8,   9, 26, 10,  6, 22,  2, 18), 
@@ -87,27 +87,27 @@ while True:
         (39, 35, 59, 55, 51, 50, 54, 49), 
     ))
 
-    spi_595.show(background)
+    piper_light_show.show(background)
 
     time.sleep(5)
 
     ################################################################################
     # Fifth Phase - TODO investigate glitch when this starts up
 
-    ball = spi_595.Pix.from_iter((
+    ball = piper_light_show.Pix.from_iter((
         (0, 0), # black
         (0, 0),
     ))
 
-    background = spi_595.Pix.from_iter((
-        (spi_595.RED, spi_595.GREEN, spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED, spi_595.GREEN),
-        (spi_595.GREEN, spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED, spi_595.GREEN, spi_595.BLUE),
-        (spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED, spi_595.GREEN, spi_595.BLUE, spi_595.CYAN),
-        (spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED, spi_595.GREEN, spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA),
-        (spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED, spi_595.GREEN, spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW),
-        (spi_595.YELLOW, spi_595.RED, spi_595.GREEN, spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED),
-        (spi_595.RED, spi_595.GREEN, spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED, spi_595.GREEN),
-        (spi_595.GREEN, spi_595.BLUE, spi_595.CYAN, spi_595.MAGENTA, spi_595.YELLOW, spi_595.RED, spi_595.GREEN, spi_595.BLUE),
+    background = piper_light_show.Pix.from_iter((
+        (piper_light_show.RED, piper_light_show.GREEN, piper_light_show.BLUE, piper_light_show.CYAN, piper_light_show.MAGENTA, piper_light_show.YELLOW, piper_light_show.RED, piper_light_show.GREEN),
+        (piper_light_show.GREEN, piper_light_show.BLUE, piper_light_show.CYAN, piper_light_show.MAGENTA, piper_light_show.YELLOW, piper_light_show.RED, piper_light_show.GREEN, piper_light_show.BLUE),
+        (piper_light_show.BLUE, piper_light_show.CYAN, piper_light_show.MAGENTA, piper_light_show.YELLOW, piper_light_show.RED, piper_light_show.GREEN, piper_light_show.BLUE, piper_light_show.CYAN),
+        (piper_light_show.CYAN, piper_light_show.MAGENTA, piper_light_show.YELLOW, piper_light_show.RED, piper_light_show.GREEN, piper_light_show.BLUE, piper_light_show.CYAN, piper_light_show.MAGENTA),
+        (piper_light_show.MAGENTA, piper_light_show.YELLOW, piper_light_show.RED, piper_light_show.GREEN, piper_light_show.BLUE, piper_light_show.CYAN, piper_light_show.MAGENTA, piper_light_show.YELLOW),
+        (piper_light_show.YELLOW, piper_light_show.RED, piper_light_show.GREEN, piper_light_show.BLUE, piper_light_show.CYAN, piper_light_show.MAGENTA, piper_light_show.YELLOW, piper_light_show.RED),
+        (piper_light_show.RED, piper_light_show.GREEN, piper_light_show.BLUE, piper_light_show.CYAN, piper_light_show.MAGENTA, piper_light_show.YELLOW, piper_light_show.RED, piper_light_show.GREEN),
+        (piper_light_show.GREEN, piper_light_show.BLUE, piper_light_show.CYAN, piper_light_show.MAGENTA, piper_light_show.YELLOW, piper_light_show.RED, piper_light_show.GREEN, piper_light_show.BLUE),
     ))
 
     x = 3
@@ -125,13 +125,13 @@ while True:
         x += dx
         y += dy
         screen.blit(ball, x, y)
-        spi_595.show(screen)
-        spi_595.tick(4/12)
+        piper_light_show.show(screen)
+        piper_light_show.tick(4/12)
 
     ################################################################################
     # Sixth Phase
 
-    background = spi_595.Pix.from_iter((
+    background = piper_light_show.Pix.from_iter((
         (0, 0, 0, 0, 0, 0, 0, 0),
         (0, 0, 0, 0, 0, 0, 0, 0),
         (0, 0, 0, 0, 0, 0, 0, 0),
@@ -142,7 +142,7 @@ while True:
         (0, 0, 0, 0, 0, 0, 0, 0),
     ))
 
-    ball = spi_595.Pix.from_iter((
+    ball = piper_light_show.Pix.from_iter((
         (63, 42), # different levels of white
         (42, 21), # UGLY, but easier to see white ball
     ))
@@ -157,6 +157,6 @@ while True:
         x += dx
         y += dy
         screen.blit(ball, x, y)
-        spi_595.show(screen)
-        spi_595.tick(4/12)
+        piper_light_show.show(screen)
+        piper_light_show.tick(4/12)
 
