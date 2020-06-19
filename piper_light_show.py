@@ -32,6 +32,11 @@ import time
 from digitalio import DigitalInOut, Direction, Pull
 import _spi_595
 
+__version__ = "0.9.0"
+__repo__ = "https://github.com/derhexenmeister/LightShow.git"
+
+# Minimal number of colors
+#
 BLACK   = 0x00
 RED     = 0x30
 GREEN   = 0x0C
