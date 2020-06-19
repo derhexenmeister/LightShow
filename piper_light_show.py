@@ -247,6 +247,10 @@ def init():
     _screen = Pix(8, 8)
     _tick = time.monotonic()
 
+    _matrix_power = DigitalInOut(board.D5)
+    _matrix_power.direction = Direction.OUTPUT
+    _matrix_power.value = True
+
     _chip_select = DigitalInOut(board.MISO)
     _chip_select.direction = Direction.OUTPUT
     _chip_select.value = False
