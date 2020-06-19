@@ -1,8 +1,8 @@
 # From https://github.com/pewpew-game/game-breakout/blob/master/breakout.py
-import piper_light_show
+import piper_light_show as ls
 
 def start():
-    piper_light_show.init()
+    ls.init()
 
     try:
         game()
@@ -17,7 +17,7 @@ def game():
         data = update_game(data)
         show_scene(data)
         speed = data['player']['speed']
-        piper_light_show.tick(1 / speed)
+        ls.tick(1 / speed)
 
 def init_data():
     return {
@@ -30,8 +30,8 @@ def init_data():
             'velocity': (1, 1),
         },
         'blocks': [ 
-            [piper_light_show.GREEN, piper_light_show.BLUE, piper_light_show.GREEN, piper_light_show.BLUE, piper_light_show.GREEN, piper_light_show.BLUE, piper_light_show.GREEN, piper_light_show.BLUE], 
-            [piper_light_show.BLUE, piper_light_show.GREEN, piper_light_show.BLUE, piper_light_show.GREEN, piper_light_show.BLUE, piper_light_show.GREEN, piper_light_show.BLUE, piper_light_show.GREEN], 
+            [ls.GREEN, ls.BLUE,  ls.GREEN, ls.BLUE,  ls.GREEN, ls.BLUE,  ls.GREEN, ls.BLUE], 
+            [ls.BLUE,  ls.GREEN, ls.BLUE,  ls.GREEN, ls.BLUE,  ls.GREEN, ls.BLUE,  ls.GREEN], 
         ],
     }
 
@@ -122,10 +122,10 @@ def has_block_alive(blocks, x, y):
 
 # Quick hack
 def decrement_block(color):
-    if color == piper_light_show.GREEN:
-        return piper_light_show.BLACK
-    elif color == piper_light_show.BLUE:
-        return piper_light_show.GREEN
+    if color == ls.GREEN:
+        return ls.BLACK
+    elif color == ls.BLUE:
+        return ls.GREEN
 
 def resolve_block_hit(ball, blocks):
     xball, yball = ball['position']
@@ -204,12 +204,12 @@ def move_player(data):
     x1player, y1player = data['player']['position'][0]
     x2player, y2player = data['player']['position'][1]
 
-    keys = piper_light_show.keys()
+    keys = ls.keys()
 
-    if keys & piper_light_show.K_LEFT and x1player > 0:
+    if keys & ls.K_LEFT and x1player > 0:
         x1player -= 1
         x2player -= 1
-    elif keys & piper_light_show.K_RIGHT and x2player < 7:
+    elif keys & ls.K_RIGHT and x2player < 7:
         x1player += 1
         x2player += 1
     
@@ -221,10 +221,10 @@ def show_scene(data):
     scene = show_blocks(scene, data['blocks'])
     scene = show_player(scene, data['player'])
     scene = show_ball(scene, data['ball'])
-    piper_light_show.show(scene)
+    ls.show(scene)
 
 def new_scene():
-    return piper_light_show.Pix()
+    return ls.Pix()
 
 def show_blocks(scene, blocks):
     for row, row_blocks in enumerate(blocks):
@@ -236,23 +236,23 @@ def show_blocks(scene, blocks):
 def show_player(scene, player):
     x1player, y1player = player['position'][0]
     x2player, y2player = player['position'][1]
-    scene.pixel(x1player, y1player, piper_light_show.RED)
-    scene.pixel(x2player, y2player, piper_light_show.RED)
+    scene.pixel(x1player, y1player, ls.RED)
+    scene.pixel(x2player, y2player, ls.RED)
     return scene
 
 def show_ball(scene, ball):
     xball, yball = ball['position']
-    scene.pixel(xball, yball, piper_light_show.YELLOW)
+    scene.pixel(xball, yball, ls.YELLOW)
     return scene
 
 def end_game(winner=False):
     scene = new_scene()
     message = 'You Win' if winner else 'Game Over'
-    text = piper_light_show.Pix.from_text(message, color=piper_light_show.RED, bgcolor=piper_light_show.BLUE)
+    text = ls.Pix.from_text(message, color=ls.RED, bgcolor=ls.BLUE)
     for dx in range(-8, text.width):
         scene.blit(text, -dx, 1)
-        piper_light_show.show(scene)
-        piper_light_show.tick(1 / 12)
+        ls.show(scene)
+        ls.tick(1 / 12)
 
 while True:
     start()

@@ -1,9 +1,9 @@
 # From https://github.com/pewpew-game/game-lightsout/blob/master/lightsout.py
 #
-import piper_light_show
+import piper_light_show as ls
 
-piper_light_show.init()
-screen = piper_light_show.Pix.from_iter((
+ls.init()
+screen = ls.Pix.from_iter((
     (2, 0, 0, 0, 0, 0, 2, 0),
     (0, 0, 0, 2, 0, 2, 2, 2),
     (0, 0, 0, 0, 2, 0, 2, 0),
@@ -21,23 +21,23 @@ blink = True
 while True:
     screen.pixel(x, y, 0 if screen.pixel(x, y) < 4 else 2)
 
-    keys = piper_light_show.keys()
+    keys = ls.keys()
 
     dx = 0
     dy = 0
 
-    if keys & piper_light_show.K_UP and y > 0:
+    if keys & ls.K_UP and y > 0:
         dy = -1
-    elif keys & piper_light_show.K_DOWN and y < 7:
+    elif keys & ls.K_DOWN and y < 7:
         dy = 1
-    elif keys & piper_light_show.K_LEFT and x > 0:
+    elif keys & ls.K_LEFT and x > 0:
         dx = -1
-    elif keys & piper_light_show.K_RIGHT and x < 7:
+    elif keys & ls.K_RIGHT and x < 7:
         dx = 1
 
     target = screen.pixel(x + dx, y + dy)
 
-    if target in {0,2} and (keys & piper_light_show.K_X):
+    if target in {0,2} and (keys & ls.K_X):
         screen.pixel(x, y, 0 if screen.pixel(x,y) in {2} else 2)
         screen.pixel(x+1, y, 0 if screen.pixel(x+1,y) in {2} else 2)
         screen.pixel(x-1, y, 0 if screen.pixel(x-1,y) in {2} else 2)
@@ -60,6 +60,6 @@ while True:
 
     blink = not blink
 
-    piper_light_show.show(screen)
+    ls.show(screen)
 
-    piper_light_show.tick(1 / 6)
+    ls.tick(1 / 6)

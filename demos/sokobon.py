@@ -1,9 +1,9 @@
 # From https://github.com/pewpew-game/game-sokoban/blob/master/sokoban.py
 #
-import piper_light_show
+import piper_light_show as ls
 
-piper_light_show.init()
-screen = piper_light_show.Pix.from_iter((
+ls.init()
+screen = ls.Pix.from_iter((
     (1, 1, 1, 1, 1, 1, 1, 1),
     (1, 0, 0, 0, 0, 0, 0, 1),
     (1, 1, 3, 1, 0, 0, 0, 1),
@@ -20,16 +20,16 @@ blink = True
 
 while True:
     screen.pixel(x, y, 0 if screen.pixel(x, y) < 4 else 2)
-    keys = piper_light_show.keys()
+    keys = ls.keys()
     dx = 0
     dy = 0
-    if keys & piper_light_show.K_UP:
+    if keys & ls.K_UP:
         dy = -1
-    elif keys & piper_light_show.K_DOWN:
+    elif keys & ls.K_DOWN:
         dy = 1
-    elif keys & piper_light_show.K_LEFT:
+    elif keys & ls.K_LEFT:
         dx = -1
-    elif keys & piper_light_show.K_RIGHT:
+    elif keys & ls.K_RIGHT:
         dx = 1
     target = screen.pixel(x + dx, y + dy)
     behind = screen.pixel(x + dx + dx, y + dy + dy)
@@ -49,5 +49,5 @@ while True:
         break
     screen.pixel(x, y, (3 if blink else 2) + (4 if screen.pixel(x, y) in {2, 7} else 0))
     blink = not blink
-    piper_light_show.show(screen)
-    piper_light_show.tick(1 / 6)
+    ls.show(screen)
+    ls.tick(1 / 6)

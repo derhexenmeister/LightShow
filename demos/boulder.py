@@ -1,7 +1,6 @@
 # From https://github.com/pewpew-game/game-boulder/blob/master/boulder.py
 #
-import piper_light_show
-
+import piper_light_show as ls
 
 VOID = 0
 WALL = 1
@@ -12,8 +11,8 @@ GEM1 = 5
 GEM2 = 6
 
 
-piper_light_show.init()
-screen = piper_light_show.Pix.from_iter((
+ls.init()
+screen = ls.Pix.from_iter((
     (1, 1, 1, 4, 1, 1, 1, 1),
     (1, 2, 2, 2, 3, 0, 2, 1),
     (1, 1, 3, 1, 2, 5, 2, 1),
@@ -36,16 +35,16 @@ for y in range(8):
 
 while not dead:
     screen.pixel(x, y, VOID)
-    pressed = piper_light_show.keys()
+    pressed = ls.keys()
     dx = 0
     dy = 0
-    if pressed & piper_light_show.K_UP:
+    if pressed & ls.K_UP:
         dy = -1
-    elif pressed & piper_light_show.K_DOWN:
+    elif pressed & ls.K_DOWN:
         dy = 1
-    elif pressed & piper_light_show.K_LEFT:
+    elif pressed & ls.K_LEFT:
         dx = -1
-    elif pressed & piper_light_show.K_RIGHT:
+    elif pressed & ls.K_RIGHT:
         dx = 1
     if screen.pixel(x + dx, y + dy) not in {WALL, ROCK}:
         x += dx
@@ -73,6 +72,6 @@ while not dead:
         break
     screen.pixel(x, y, 3 if blink else HERO)
     blink = not blink
-    piper_light_show.show(screen)
-    piper_light_show.tick(1 / 6)
+    ls.show(screen)
+    ls.tick(1 / 6)
 

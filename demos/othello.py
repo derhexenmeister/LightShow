@@ -1,7 +1,7 @@
 # From https://github.com/pewpew-game/game-othello/blob/master/othello.py
 # Othello, copyright 2019 Christian Walther
 
-import piper_light_show
+import piper_light_show as ls
 try:
 	import random
 except ImportError:
@@ -9,14 +9,14 @@ except ImportError:
 
 import os
 if 'PewPew 10.' in os.uname().machine:
-	screen2 = piper_light_show.Pix()
+	screen2 = ls.Pix()
 	def show(p):
 		for i in range(len(p.buffer)):
 			c = p.buffer[i]
 			screen2.buffer[i] = c ^ (c >> 1)
-		piper_light_show.show(screen2)
+		ls.show(screen2)
 else:
-	show = piper_light_show.show
+	show = ls.show
 
 def lookup(board, x, y):
 	return 0 if x < 0 or y < 0 or x >= 8 or y >= 8 else board[y*8 + x]
@@ -93,9 +93,9 @@ def checkwin(board, passcount):
 			winner |= 1
 		if c[2] >= c[1]:
 			winner |= 2
-		while piper_light_show.keys():
-			piper_light_show.tick(0.1)
-		while not piper_light_show.keys():
+		while ls.keys():
+			ls.tick(0.1)
+		while not ls.keys():
 			for y in range(8):
 				for x in range(8):
 					p = lookup(board, x, y)
@@ -111,19 +111,19 @@ def checkwin(board, passcount):
 								p = 3
 					screen.pixel(x, y, p)
 			show(screen)
-			piper_light_show.tick(0.06)
-		raise piper_light_show.GameOver()
+			ls.tick(0.06)
+		raise ls.GameOver()
 
 keyhistory = 0
 def keyevents():
 	global keyhistory
-	keys = piper_light_show.keys()
+	keys = ls.keys()
 	events = keys & (~keyhistory | (keyhistory & (keyhistory >> 8) & (keyhistory >> 16) & (keyhistory >> 24)))
 	keyhistory = ((keyhistory & 0x3FFFFF) << 8) | keys
 	return events
 
-piper_light_show.init()
-screen = piper_light_show.Pix()
+ls.init()
+screen = ls.Pix()
 board = bytearray(64)
 board[27] = 1
 board[28] = 2
@@ -149,7 +149,7 @@ while True:
 		checkwin(board, passcount)
 	
 	keys = keyevents()
-	if keys & piper_light_show.K_O:
+	if keys & ls.K_O:
 		newboard = move(board, cursorx, cursory, turn)
 		if newboard:
 			board = newboard
@@ -157,28 +157,28 @@ while True:
 			passcount = 0
 		else:
 			error = 4
-	if keys & piper_light_show.K_X:
+	if keys & ls.K_X:
 		turn = turn ^ 3
 		passcount += 1
-	if keys & piper_light_show.K_RIGHT:
+	if keys & ls.K_RIGHT:
 		cursorx = (cursorx + 1) & 7
 		error = 0
-	if keys & piper_light_show.K_LEFT:
+	if keys & ls.K_LEFT:
 		cursorx = (cursorx - 1) & 7
 		error = 0
-	if keys & piper_light_show.K_UP:
+	if keys & ls.K_UP:
 		cursory = (cursory - 1) & 7
 		error = 0
-	if keys & piper_light_show.K_DOWN:
+	if keys & ls.K_DOWN:
 		cursory = (cursory + 1) & 7
 		error = 0
 	checkwin(board, passcount)
 	blink = 0 if keys != 0 else (blink + 1) % 6
 	
-	screen.blit(piper_light_show.Pix(8, 8, board))
+	screen.blit(ls.Pix(8, 8, board))
 	if blink < 2 and turn == 1:
 		screen.pixel(cursorx, cursory, turn if lookup(board, cursorx, cursory) == 0 and error == 0 else 3)
 	if error != 0:
 		error -= 1
 	show(screen)
-	piper_light_show.tick(0.06)
+	ls.tick(0.06)
