@@ -37,7 +37,7 @@ def debounce():
         if not ls.keys():
             return
 
-ls.init()
+ls.init(dpad=True)
 
 while True:
     screen = ls.Pix(width=8, height=8)

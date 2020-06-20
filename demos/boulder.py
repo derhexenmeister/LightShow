@@ -11,7 +11,7 @@ GEM1 = 5
 GEM2 = 6
 
 
-ls.init()
+ls.init(dpad=True)
 screen = ls.Pix.from_iter((
     (1, 1, 1, 4, 1, 1, 1, 1),
     (1, 2, 2, 2, 3, 0, 2, 1),

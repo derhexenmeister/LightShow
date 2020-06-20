@@ -122,7 +122,7 @@ def keyevents():
 	keyhistory = ((keyhistory & 0x3FFFFF) << 8) | keys
 	return events
 
-ls.init()
+ls.init(dpad=True)
 screen = ls.Pix()
 board = bytearray(64)
 board[27] = 1

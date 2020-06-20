@@ -2,7 +2,7 @@
 #
 import piper_light_show as ls
 
-ls.init()
+ls.init(dpad=True)
 screen = ls.Pix.from_iter((
     (2, 0, 0, 0, 0, 0, 2, 0),
     (0, 0, 0, 2, 0, 2, 2, 2),

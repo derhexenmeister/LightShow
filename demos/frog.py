@@ -2,7 +2,7 @@
 #
 import piper_light_show as ls
 
-ls.init()
+ls.init(dpad=True)
 
 while True:
     screen = ls.Pix()

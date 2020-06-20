@@ -2,7 +2,7 @@
 import piper_light_show as ls
 
 def start():
-    ls.init()
+    ls.init(dpad=True)
 
     try:
         game()

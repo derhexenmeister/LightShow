@@ -242,7 +242,7 @@ class Pix:
         )
 
 
-def init():
+def init(dpad=False):
     global _screen, _tick, _spi, _chip_select
     global _up, _down, _left, _right
 
@@ -273,24 +273,25 @@ def init():
     _spi.configure(baudrate=8000000, phase=0, polarity=0)
     _spi_595.SPI_595(_spi, _chip_select, _screen.buffer)
 
-    # TODO - handle DPAD for easier porting of PewPew projects
-    # probably want to move this out later
-    #
-    # Directional pad pins need pull-ups enabled
-    #
-    _right = DigitalInOut(board.D4)
-    _right.direction = Direction.INPUT
-    _right.pull = Pull.UP
+    if dpad:
+        # TODO - handle DPAD for easier porting of PewPew projects
+        # probably want to move this out later
+        #
+        # Directional pad pins need pull-ups enabled
+        #
+        _right = DigitalInOut(board.D4)
+        _right.direction = Direction.INPUT
+        _right.pull = Pull.UP
 
-    _left = DigitalInOut(board.D3)
-    _left.direction = Direction.INPUT
-    _left.pull = Pull.UP
+        _left = DigitalInOut(board.D3)
+        _left.direction = Direction.INPUT
+        _left.pull = Pull.UP
 
-    _up = DigitalInOut(board.D1)
-    _up.direction = Direction.INPUT
-    _up.pull = Pull.UP
+        _up = DigitalInOut(board.D1)
+        _up.direction = Direction.INPUT
+        _up.pull = Pull.UP
 
-    _down = DigitalInOut(board.D0)
-    _down.direction = Direction.INPUT
-    _down.pull = Pull.UP
+        _down = DigitalInOut(board.D0)
+        _down.direction = Direction.INPUT
+        _down.pull = Pull.UP
 
