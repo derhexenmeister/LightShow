@@ -32,7 +32,7 @@ import time
 from digitalio import DigitalInOut, Direction, Pull
 import _spi_595
 
-__version__ = "0.9.0"
+__version__ = "0.9.1"
 __repo__ = "https://github.com/derhexenmeister/LightShow.git"
 
 # Minimal number of colors
