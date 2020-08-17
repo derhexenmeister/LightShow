@@ -30,9 +30,9 @@ import board
 import busio
 import time
 from digitalio import DigitalInOut, Direction, Pull
-import _spi_595
+import _lightshow
 
-__version__ = "0.9.1"
+__version__ = "0.9.2"
 __repo__ = "https://github.com/derhexenmeister/LightShow.git"
 
 # Minimal number of colors
@@ -271,7 +271,7 @@ def init(dpad=False):
     # If 8 MHz is too fast, then we will need to slow down the
     # interrupt rate and thus the screen refresh rate.
     _spi.configure(baudrate=8000000, phase=0, polarity=0)
-    _spi_595.SPI_595(_spi, _chip_select, _screen.buffer)
+    _lightshow.LIGHTSHOW(_spi, _chip_select, _screen.buffer)
 
     if dpad:
         # TODO - handle DPAD for easier porting of PewPew projects
